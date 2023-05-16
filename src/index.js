@@ -9,15 +9,11 @@ const getSuggestedEndOfDayBalance = (
   monthlySalary,
   currentDate
 ) => {
-  const previousPayDay =
-    currentDate.getDate() < payDayOfMonth
-      ? setDate(subMonths(currentDate, 1), payDayOfMonth)
-      : setDate(currentDate, payDayOfMonth);
-
-  const nextPayDay =
-    currentDate.getDate() < payDayOfMonth
-      ? setDate(currentDate, payDayOfMonth)
-      : setDate(addMonths(currentDate, 1), payDayOfMonth);
+  const nextPayDay = setDate(
+    addMonths(currentDate, currentDate.getDate() < payDayOfMonth ? 0 : 1),
+    payDayOfMonth
+  );
+  const previousPayDay = subMonths(nextPayDay, 1);
 
   const daysBetweenPayDays = differenceInDays(nextPayDay, previousPayDay);
   const averageSpendPrDay = monthlySalary / daysBetweenPayDays;
