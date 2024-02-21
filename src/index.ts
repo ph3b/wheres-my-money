@@ -5,7 +5,7 @@ import { InputError } from "./input-error";
 const parseIntOrThrow = (value: any, parameterName: string): number => {
   const salaryInt = parseInt(value);
   if (isNaN(salaryInt)) {
-    throw new InputError(`Invalid or missing parameter '${parameterName}'`);
+    throw new InputError(`Invalid or missing query '${parameterName}'`);
   }
 
   return salaryInt;
