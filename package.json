@@ -4,9 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@types/format-thousands": "^2.0.3",
     "date-fns": "^2.29.3",
-    "express": "^4.18.2",
     "format-thousands": "^2.0.0",
     "itty-router": "^4.0.27",
     "wrangler": "^3.28.4"
@@ -15,7 +13,7 @@
     "@cloudflare/workers-types": "^4.20240208.0",
     "@types/node": "^20.5.7",
     "@types/service-worker-mock": "^2.0.1",
-    "wrangler": "^3.0.0"
+    "@types/format-thousands": "^2.0.3"
   },
   "scripts": {
     "deploy": "wrangler deploy",
