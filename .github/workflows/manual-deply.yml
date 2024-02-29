@@ -1,9 +1,14 @@
+name: Manual deploy
 on:
   workflow_dispatch:
     inputs:
       environment:
         description: "Choose an environment to deploy to: <dev|staging|prod>"
         required: true
+        options:
+          - dev
+          - staging
+          - prod
         default: "dev"
 jobs:
   deploy:
