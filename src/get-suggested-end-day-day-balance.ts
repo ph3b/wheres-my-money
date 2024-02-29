@@ -8,7 +8,8 @@ import {
   isWeekend,
 } from "date-fns";
 
-const toCurrencyFormat = (amount: number) => formatThousands(amount) + " kr";
+const toCurrencyFormat = (amount: number) =>
+  formatThousands(Math.floor(amount)) + " kr";
 
 const getNextPayDay = (payDayOfMonth: number, currentDate: Date) => {
   const nextPayDay = setDate(
@@ -31,11 +32,10 @@ export const getSuggestedEndOfDayBalance = (
     monthlySalary / differenceInDays(nextPayDay, previousPayDay);
 
   const daysUntilPayDay = differenceInDays(nextPayDay, currentDate);
+  const suggestBalance = (daysUntilPayDay - 1) * averageSpendPrDay;
 
   return {
-    balance: toCurrencyFormat(
-      Math.ceil((daysUntilPayDay - 1) * averageSpendPrDay)
-    ),
-    prDay: toCurrencyFormat(Math.floor(averageSpendPrDay)),
+    balance: toCurrencyFormat(suggestBalance),
+    prDay: toCurrencyFormat(averageSpendPrDay),
   };
 };
