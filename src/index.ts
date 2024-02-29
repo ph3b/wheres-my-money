@@ -1,24 +1,17 @@
 import { Router, json, error } from "itty-router";
 import { getSuggestedEndOfDayBalance } from "./get-suggested-end-day-day-balance";
-import { InputError } from "./input-error";
-
-const parseIntOrThrow = (value: any, parameterName: string): number => {
-  const salaryInt = parseInt(value);
-  if (isNaN(salaryInt)) {
-    throw new InputError(`Invalid or missing query '${parameterName}'`);
-  }
-
-  return salaryInt;
-};
+import { ZodError, z } from "zod";
 
 const router = Router()
   .get("/balance", (req) => {
-    const { salary, payDayOfMonth } = req.query;
+    const { payDayOfMonth, salary } = z
+      .object({
+        payDayOfMonth: z.number({ coerce: true }).gte(1).lte(28),
+        salary: z.number({ coerce: true }).positive().safe(),
+      })
+      .parse(req.query);
 
-    const salaryInt = parseIntOrThrow(salary, "salary");
-    const payDayOfMonthInt = parseIntOrThrow(payDayOfMonth, "payDayOfMonth");
-
-    return getSuggestedEndOfDayBalance(payDayOfMonthInt, salaryInt, new Date());
+    return getSuggestedEndOfDayBalance(payDayOfMonth, salary, new Date());
   })
   .all("*", () => error(404));
 
@@ -28,8 +21,10 @@ export default {
       .handle(request, ...args)
       .then(json)
       .catch((error) => {
-        if (error instanceof InputError) {
-          return json({ message: error.message }, { status: 400 });
+        if (error instanceof ZodError) {
+          return json({ errors: error.errors }, { status: 400 });
         }
+
+        throw error;
       }),
 };
