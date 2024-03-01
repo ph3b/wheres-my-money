@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-dev:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy development
     environment: dev
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,8 @@ jobs:
 
   deploy-prod:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy production
+    needs: deploy-dev
     environment: prod
     steps:
       - uses: actions/checkout@v4
