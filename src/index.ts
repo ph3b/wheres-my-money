@@ -1,5 +1,5 @@
 import { Router, json, error } from "itty-router";
-import { getSuggestedEndOfDayBalance } from "./get-suggested-end-day-day-balance";
+import { getSuggestedEndOfDayBalance } from "./get-suggested-end-of-day-balance";
 import { ZodError, z } from "zod";
 
 const router = Router()
