@@ -6,44 +6,13 @@ on:
 
 jobs:
   deploy-dev:
-    runs-on: ubuntu-latest
-    name: Deploy development
-    environment:
-      name: dev
-      url: ${{ steps.deploy-dev.outputs.deployment-url }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8.9.2
-
-      - name: Deploy
-        id: deploy-dev
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy --env dev
+    uses: "./.github/workflows/actions/deploy-action.yml"
+    with:
+      target-env: dev
+    secrets: inherit
 
   deploy-prod:
-    runs-on: ubuntu-latest
-    name: Deploy production
-    needs: deploy-dev
-    environment:
-      name: prod
-      url: ${{ steps.deploy-prod.outputs.deployment-url }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8.9.2
-
-      - name: Deploy
-        id: deploy-prod
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy --env prod
+    uses: "./.github/workflows/actions/deploy-action.yml"
+    with:
+      target-env: prod
+    secrets: inherit

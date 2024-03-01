@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+    inputs:
+        target-env:
+            required: true
+            type: string
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy ${{inputs.target-env}}
+        environment:
+            name: ${{inputs.target-env}}
+            url: ${{ steps.deploy.outputs.deployment-url }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up pnpm
+                uses: pnpm/action-setup@v3
+                with:
+                version: 8.9.2
+
+            - name: Deploy
+                id: deploy
+                uses: cloudflare/wrangler-action@v3
+                with:
+                apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                command: deploy --env dev
