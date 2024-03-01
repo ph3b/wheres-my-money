@@ -10,7 +10,7 @@ jobs:
     name: Deploy development
     environment:
       name: dev
-      url: ${{ steps.deploy.outputs.deployment-url }}
+      url: ${{ steps.deploy-dev.outputs.deployment-url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -20,14 +20,11 @@ jobs:
           version: 8.9.2
 
       - name: Deploy
+        id: deploy-dev
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: deploy --env dev
-      - name: Deployment-url
-        env:
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-        run: echo $DEPLOYMENT_URL
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -35,7 +32,7 @@ jobs:
     needs: deploy-dev
     environment:
       name: prod
-      url: ${{ steps.deploy.outputs.deployment-url }}
+      url: ${{ steps.deploy-prod.outputs.deployment-url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -45,6 +42,7 @@ jobs:
           version: 8.9.2
 
       - name: Deploy
+        id: deploy-prod
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
