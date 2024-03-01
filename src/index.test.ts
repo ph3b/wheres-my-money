@@ -5,6 +5,7 @@ describe("Smoke test", () => {
 
   beforeAll(async () => {
     worker = await unstable_dev("./src/index.ts", {
+      ip: "127.0.0.1",
       experimental: {
         disableExperimentalWarning: true,
       },
