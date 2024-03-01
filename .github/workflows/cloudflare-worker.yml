@@ -12,6 +12,7 @@ jobs:
     secrets: inherit
 
   deploy-prod:
+    needs: deploy-dev
     uses: "./.github/workflows/deploy-action.yml"
     with:
       target-env: prod
