@@ -4,8 +4,10 @@ on:
       target-env:
         required: true
         type: string
+
 jobs:
-  deploy-dev:
+  deploy:
+    concurrency: ${{inputs.target-env}}-deploy
     runs-on: ubuntu-latest
     name: Deploy ${{ inputs.target-env }}
     environment:
