@@ -6,9 +6,10 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy-dev:
     runs-on: ubuntu-latest
     name: Deploy
+    environment: dev
     steps:
       - uses: actions/checkout@v4
 
@@ -22,3 +23,21 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: deploy --env dev
+
+    deploy-prod:
+    runs-on: ubuntu-latest
+    name: Deploy
+    environment: prod
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8.9.2
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: deploy --env prod
