@@ -5,7 +5,19 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test:ci
+
   deploy-dev:
+    needs: test
     secrets: inherit
     uses: "./.github/workflows/deploy-action.yml"
     with:

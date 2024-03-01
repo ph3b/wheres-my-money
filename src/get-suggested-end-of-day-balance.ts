@@ -9,7 +9,7 @@ import {
 } from "date-fns";
 
 const toCurrencyFormat = (amount: number) =>
-  formatThousands(Math.floor(amount)) + " kr";
+  formatThousands(Math.floor(amount), { separator: " " }) + " kr";
 
 const getNextPayDay = (payDayOfMonth: number, currentDate: Date) => {
   const nextPayDay = setDate(
