@@ -6,13 +6,13 @@ on:
 
 jobs:
   deploy-dev:
-    uses: "./.github/workflows/actions/deploy-action.yml"
+    uses: "./.github/workflows/deploy-action.yml"
     with:
       target-env: dev
     secrets: inherit
 
   deploy-prod:
-    uses: "./.github/workflows/actions/deploy-action.yml"
+    uses: "./.github/workflows/deploy-action.yml"
     with:
       target-env: prod
     secrets: inherit
