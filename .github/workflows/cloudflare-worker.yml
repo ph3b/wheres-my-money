@@ -24,15 +24,8 @@ jobs:
     with:
       target-env: dev
 
-  deploy-staging:
-    needs: deploy-dev
-    secrets: inherit
-    uses: "./.github/workflows/deploy-action.yml"
-    with:
-      target-env: stage
-
   deploy-prod:
-    needs: deploy-staging
+    needs: deploy-dev
     secrets: inherit
     uses: "./.github/workflows/deploy-action.yml"
     with:

@@ -3,5 +3,4 @@ main = "src/index.ts"
 compatibility_date = "2024-02-08"
 
 [env.dev]
-[env.stage]
 [env.prod]
