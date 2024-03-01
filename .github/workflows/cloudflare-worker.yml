@@ -14,7 +14,9 @@ jobs:
         with:
           version: 8.9.2
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run test:ci
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          command: pnpm run test:ci
 
   deploy-dev:
     needs: test
