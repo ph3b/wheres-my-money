@@ -4,14 +4,10 @@ on:
     inputs:
       environment:
         type: environment
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy app
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy --env ${{ github.event.inputs.environment }}
+    secrets: inherit
+    uses: "./.github/workflows/deploy-action.yml"
+    with:
+      target-env: ${{inputs.environment}}
