@@ -10,7 +10,7 @@ jobs:
     name: Deploy development
     environment:
       name: dev
-      url: ${{ steps.deploy-dev.outputs.deployment-url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +31,7 @@ jobs:
     needs: deploy-dev
     environment:
       name: prod
-      url: ${{ steps.deploy-prod.outputs.deployment-url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/checkout@v4
 
