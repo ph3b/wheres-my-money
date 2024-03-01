@@ -24,7 +24,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: deploy --env dev
 
-    deploy-prod:
+  deploy-prod:
     runs-on: ubuntu-latest
     name: Deploy
     environment: prod
