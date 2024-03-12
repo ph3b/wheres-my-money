@@ -6,7 +6,7 @@ To keep track of how much money you should have in your account at any given day
 
 ## Example
 Assuming you expect to have 10 000 kr available for spending each month, and your salary is payed the 15th every month.
-`GET https://suggest-account-balance.fly.dev/balance?payDayOfMonth=15&salary=10000`
+`GET https://wheres-my-money-cf-dev.miden.workers.dev/balance?salary=10000&payDayOfMonth=15`
 
 Returns
 ```json
