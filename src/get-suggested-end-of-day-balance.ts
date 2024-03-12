@@ -11,11 +11,6 @@ import {
 const toCurrencyFormat = (amount: number) =>
   formatThousands(Math.floor(amount), { separator: " " }) + " kr";
 
-/**
- * 1. Paydays is in this month, not weekend
- * 2. Paydays is in this month, weekend
- */
-
 const getPayDayForMonth = (payDayOfMonth: number, dateForMonth: Date): Date => {
   const payDayDate = setDate(dateForMonth, payDayOfMonth);
   return isWeekend(payDayDate) ? previousFriday(payDayDate) : payDayDate;
@@ -23,21 +18,18 @@ const getPayDayForMonth = (payDayOfMonth: number, dateForMonth: Date): Date => {
 
 const getPreviousPayDay = (payDayOfMonth: number, currentDate: Date): Date => {
   const payDayForMonth = getPayDayForMonth(payDayOfMonth, currentDate);
-  if (payDayForMonth <= currentDate) {
-    return payDayForMonth;
-  }
 
-  return getPayDayForMonth(payDayOfMonth, subMonths(currentDate, 1));
+  return payDayForMonth <= currentDate
+    ? payDayForMonth
+    : getPayDayForMonth(payDayOfMonth, subMonths(currentDate, 1));
 };
 
 const getNextPayDay = (payDayOfMonth: number, currentDate: Date): Date => {
   const payDayForMonth = getPayDayForMonth(payDayOfMonth, currentDate);
 
-  if (payDayForMonth > currentDate) {
-    return payDayForMonth;
-  }
-
-  return getPayDayForMonth(payDayOfMonth, addMonths(currentDate, 1));
+  return payDayForMonth > currentDate
+    ? payDayForMonth
+    : getPayDayForMonth(payDayOfMonth, addMonths(currentDate, 1));
 };
 
 export const getSuggestedEndOfDayBalance = (
