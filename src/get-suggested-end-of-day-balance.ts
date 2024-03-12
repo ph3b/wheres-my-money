@@ -11,13 +11,33 @@ import {
 const toCurrencyFormat = (amount: number) =>
   formatThousands(Math.floor(amount), { separator: " " }) + " kr";
 
-const getNextPayDay = (payDayOfMonth: number, currentDate: Date) => {
-  const nextPayDay = setDate(
-    addMonths(currentDate, currentDate.getDate() < payDayOfMonth ? 0 : 1),
-    payDayOfMonth
-  );
+/**
+ * 1. Paydays is in this month, not weekend
+ * 2. Paydays is in this month, weekend
+ */
 
-  return isWeekend(nextPayDay) ? previousFriday(nextPayDay) : nextPayDay;
+const getPayDayForMonth = (payDayOfMonth: number, dateForMonth: Date): Date => {
+  const payDayDate = setDate(dateForMonth, payDayOfMonth);
+  return isWeekend(payDayDate) ? previousFriday(payDayDate) : payDayDate;
+};
+
+const getPreviousPayDay = (payDayOfMonth: number, currentDate: Date): Date => {
+  const payDayForMonth = getPayDayForMonth(payDayOfMonth, currentDate);
+  if (payDayForMonth <= currentDate) {
+    return payDayForMonth;
+  }
+
+  return getPayDayForMonth(payDayOfMonth, subMonths(currentDate, 1));
+};
+
+const getNextPayDay = (payDayOfMonth: number, currentDate: Date): Date => {
+  const payDayForMonth = getPayDayForMonth(payDayOfMonth, currentDate);
+
+  if (payDayForMonth > currentDate) {
+    return payDayForMonth;
+  }
+
+  return getPayDayForMonth(payDayOfMonth, addMonths(currentDate, 1));
 };
 
 export const getSuggestedEndOfDayBalance = (
@@ -26,7 +46,7 @@ export const getSuggestedEndOfDayBalance = (
   currentDate: Date
 ) => {
   const nextPayDay = getNextPayDay(payDayOfMonth, currentDate);
-  const previousPayDay = subMonths(nextPayDay, 1);
+  const previousPayDay = getPreviousPayDay(payDayOfMonth, currentDate);
 
   const averageSpendPrDay =
     monthlySalary / differenceInDays(nextPayDay, previousPayDay);
@@ -37,5 +57,6 @@ export const getSuggestedEndOfDayBalance = (
   return {
     balance: toCurrencyFormat(suggestBalance),
     prDay: toCurrencyFormat(averageSpendPrDay),
+    daysUntilPayDay,
   };
 };
