@@ -2,7 +2,7 @@ import { Router, json, error } from "itty-router";
 import { getSuggestedEndOfDayBalance } from "./get-suggested-end-of-day-balance";
 import { ZodError, z } from "zod";
 
-const getNorwegianCurrentDate = () =>
+const getNorwegianCurrentTime = () =>
   new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Oslo" }));
 
 const BalanceQueries = z.object({
@@ -14,12 +14,7 @@ const router = Router();
 
 router.get("/balance", (req) => {
   const { payDayOfMonth, salary } = BalanceQueries.parse(req.query);
-  const norwegianCurrentDate = getNorwegianCurrentDate();
-
-  return {
-    ...getSuggestedEndOfDayBalance(payDayOfMonth, salary, norwegianCurrentDate),
-    noTime: norwegianCurrentDate,
-  };
+  return getSuggestedEndOfDayBalance(payDayOfMonth, salary, getNorwegianCurrentTime())
 });
 
 export default {

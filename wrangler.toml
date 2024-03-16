@@ -1,6 +1,7 @@
 name = "wheres-my-money-cf"
 main = "src/index.ts"
 compatibility_date = "2024-02-08"
+compatibility_flags = ["nodejs_compat"]
 
 [env.dev]
 [env.prod]

@@ -1,26 +1,13 @@
-import { UnstableDevWorker, unstable_dev } from "wrangler";
+import { test, expect } from "vitest"
+import { SELF as worker } from "cloudflare:test";
+import "./index"
 
-describe("Smoke test", () => {
-  let worker: UnstableDevWorker;
+test("Run integration smoke test", async () => {
+  const response = await worker.fetch("http://example.com/balance?salary=10000&payDayOfMonth=10");
+  const body = await response.json() as any;
 
-  beforeAll(async () => {
-    worker = await unstable_dev("./src/index.ts", {
-      ip: "127.0.0.1",
-      experimental: {
-        disableExperimentalWarning: true,
-      },
-    });
-  });
-
-  it("Should return calculations", async () => {
-    const resp = await worker.fetch("balance?salary=10000&payDayOfMonth=10");
-    const body = (await resp.json()) as any;
-
-    expect(resp.status).toBe(200);
-    expect(body.balance).toBeDefined();
-    expect(body.prDay).toBeDefined();
-    expect(body.errors).toBeUndefined();
-  });
-
-  afterAll(() => worker.stop());
+  expect(response.status).toBe(200);
+  expect(body.balance).toBeDefined();
+  expect(body.prDay).toBeDefined();
+  expect(body.errors).toBeUndefined();
 });

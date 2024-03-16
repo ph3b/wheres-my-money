@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { getSuggestedEndOfDayBalance } from "./get-suggested-end-of-day-balance";
 
 test("Should calculate correctly when payday is not during weekend", () => {

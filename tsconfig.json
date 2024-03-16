@@ -10,9 +10,10 @@
     "target": "esnext",
     "module": "esnext",
     "types": [
-      "@types/jest",
       "@types/node",
       "@types/service-worker-mock",
+      "@cloudflare/workers-types/experimental",
+      "@cloudflare/vitest-pool-workers",
       "@cloudflare/workers-types/2023-07-01"
     ]
   },
