@@ -11,7 +11,7 @@ jobs:
     name: Deploy ${{ inputs.target-env }}
     environment:
       name: ${{ inputs.target-env }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}/balance?salary=10000&payDayOfMonth=10
     steps:
       - uses: actions/checkout@v4
 
