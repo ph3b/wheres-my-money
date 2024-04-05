@@ -4,4 +4,10 @@ compatibility_date = "2024-02-08"
 compatibility_flags = ["nodejs_compat"]
 
 [env.dev]
+routes = [
+	{ pattern = "wmm.dev.api.idencapital.no", custom_domain = true }
+]
 [env.prod]
+routes = [
+	{ pattern = "wmm.api.idencapital.no", custom_domain = true }
+]
