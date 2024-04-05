@@ -1,37 +1,31 @@
-import { Router, json, error } from "itty-router";
+import { AutoRouter } from "itty-router";
+import { z } from "zod";
+
 import { getSuggestedEndOfDayBalance } from "./get-suggested-end-of-day-balance";
-import { ZodError, z } from "zod";
+import { getNorwegianCurrentTime } from "./get-norwegian-current-time";
+import { handleZodValidationErrors, validateQuery } from "./zod-utils";
 
-const getNorwegianCurrentTime = () =>
-  new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Oslo" }));
-
-const BalanceQueries = z.object({
-  payDayOfMonth: z.number({ coerce: true }).gte(1).lte(28),
-  salary: z.number({ coerce: true }).positive().safe(),
+const router = AutoRouter({
+  base: "/wmm",
+  catch: handleZodValidationErrors,
 });
 
-const router = Router({ base: "/wmm" });
-
-router.get("/balance", (req) => {
-  const { payDayOfMonth, salary } = BalanceQueries.parse(req.query);
-  return getSuggestedEndOfDayBalance(
-    payDayOfMonth,
-    salary,
-    getNorwegianCurrentTime()
-  );
-});
+router.get(
+  "/balance",
+  validateQuery(
+    z.object({
+      payDayOfMonth: z.number({ coerce: true }).gte(1).lte(28),
+      salary: z.number({ coerce: true }).positive().safe(),
+    })
+  ),
+  ({ data: { payDayOfMonth, salary } }) =>
+    getSuggestedEndOfDayBalance(
+      payDayOfMonth,
+      salary,
+      getNorwegianCurrentTime()
+    )
+);
 
 export default {
-  fetch: (request: Request, ...args: any) =>
-    router
-      .all("*", () => error(404))
-      .handle(request, ...args)
-      .then(json)
-      .catch((error) => {
-        if (error instanceof ZodError) {
-          return json({ errors: error.errors }, { status: 400 });
-        }
-
-        throw error;
-      }),
+  fetch: (req: Request, ...args: any[]) => router.fetch(req, ...args),
 };
