@@ -5,9 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 
 [env.dev]
 routes = [
-	{ pattern = "wmm.dev.api.idencapital.no", custom_domain = true }
+	{ pattern = "api-test.idencapital.no/wmm*", zone_name="idencapital.no" }
 ]
 [env.prod]
 routes = [
-	{ pattern = "wmm.api.idencapital.no", custom_domain = true }
+	{ pattern = "api.idencapital.no/wmm*", zone_name="idencapital.no" }
 ]

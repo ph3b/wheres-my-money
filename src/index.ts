@@ -10,11 +10,15 @@ const BalanceQueries = z.object({
   salary: z.number({ coerce: true }).positive().safe(),
 });
 
-const router = Router();
+const router = Router({ base: "/wmm" });
 
 router.get("/balance", (req) => {
   const { payDayOfMonth, salary } = BalanceQueries.parse(req.query);
-  return getSuggestedEndOfDayBalance(payDayOfMonth, salary, getNorwegianCurrentTime())
+  return getSuggestedEndOfDayBalance(
+    payDayOfMonth,
+    salary,
+    getNorwegianCurrentTime()
+  );
 });
 
 export default {
