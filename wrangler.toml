@@ -7,7 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [env.dev]
 routes = [
-	{ pattern = "api-test.idencapital.no/wmm*", zone_name="idencapital.no" }
+	{ pattern = "api-dev.idencapital.no/wmm*", zone_name="idencapital.no" }
 ]
 [env.prod]
 routes = [
