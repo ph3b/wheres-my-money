@@ -1,12 +1,13 @@
 import { RequestHandler, IRequest, StatusError, json } from "itty-router";
 import { ZodError, z } from "zod";
 
-export const validateQuery =
+export const createQueryValidator =
+  <CFArgs extends any[]>() =>
   <T extends z.ZodRawShape>(
-    zodObject: z.ZodObject<T>
-  ): RequestHandler<IRequest & { data: z.infer<typeof zodObject> }> =>
-  (request) => {
-    request.data = zodObject.parse(request.query);
+    shape: T
+  ): RequestHandler<IRequest & { data: z.infer<z.ZodObject<T>> }, CFArgs> =>
+  (req, ..._) => {
+    req.data = z.object(shape).parse(req.query);
   };
 
 export const handleZodValidationErrors = (error: StatusError) => {

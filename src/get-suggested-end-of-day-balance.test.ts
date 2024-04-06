@@ -1,11 +1,10 @@
-import { test, expect } from "vitest"
-import { getSuggestedEndOfDayBalance } from "./get-suggested-end-of-day-balance";
+import { test, expect } from "vitest";
+import { getSuggestedEODBalance } from "./get-suggested-end-of-day-balance";
 
 test("Should calculate correctly when payday is not during weekend", () => {
   const date = new Date(2023, 10, 5);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    10000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 10000 },
     date
   );
   expect(prDay).toBe("322 kr");
@@ -15,9 +14,8 @@ test("Should calculate correctly when payday is not during weekend", () => {
 
 test("Should calculate correctly when current day is after payday of same month", () => {
   const date = new Date(2024, 2, 15);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    10000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 10000 },
     date
   );
   expect(prDay).toBe("303 kr");
@@ -27,9 +25,8 @@ test("Should calculate correctly when current day is after payday of same month"
 
 test("Weekend payday - current day is after actual payday but same as pay day of month", () => {
   const date = new Date(2024, 3, 10);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    10000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 10000 },
     date
   );
   expect(prDay).toBe("333 kr");
@@ -39,9 +36,8 @@ test("Weekend payday - current day is after actual payday but same as pay day of
 
 test("Weekend payday - current day is after actual payout day but before pay day of month", () => {
   const date = new Date(2024, 2, 9);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    10000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 10000 },
     date
   );
 
@@ -52,9 +48,8 @@ test("Weekend payday - current day is after actual payout day but before pay day
 
 test("Weekend payday - current date is actual payout day", () => {
   const date = new Date(2024, 2, 8);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    10000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 10000 },
     date
   );
   expect(prDay).toBe("303 kr");
@@ -64,9 +59,8 @@ test("Weekend payday - current date is actual payout day", () => {
 
 test("Weekend payday - current date before actual payout day", () => {
   const date = new Date(2024, 2, 7);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    10000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 10000 },
     date
   );
   expect(prDay).toBe("357 kr");
@@ -76,9 +70,8 @@ test("Weekend payday - current date before actual payout day", () => {
 
 test("Weekend payday - current date after", () => {
   const date = new Date(2024, 2, 12);
-  const { balance, prDay, daysUntilPayDay } = getSuggestedEndOfDayBalance(
-    10,
-    20000,
+  const { balance, prDay, daysUntilPayDay } = getSuggestedEODBalance(
+    { payDayOfMonth: 10, salary: 20000 },
     date
   );
   expect(prDay).toBe("606 kr");

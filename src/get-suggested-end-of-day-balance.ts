@@ -32,16 +32,15 @@ const getNextPayDay = (payDayOfMonth: number, currentDate: Date): Date => {
     : getPayDayForMonth(payDayOfMonth, addMonths(currentDate, 1));
 };
 
-export const getSuggestedEndOfDayBalance = (
-  payDayOfMonth: number,
-  monthlySalary: number,
+export const getSuggestedEODBalance = (
+  { salary, payDayOfMonth }: { payDayOfMonth: number; salary: number },
   currentDate: Date
 ) => {
   const nextPayDay = getNextPayDay(payDayOfMonth, currentDate);
   const previousPayDay = getPreviousPayDay(payDayOfMonth, currentDate);
 
   const averageSpendPrDay =
-    monthlySalary / differenceInDays(nextPayDay, previousPayDay);
+    salary / differenceInDays(nextPayDay, previousPayDay);
 
   const daysUntilPayDay = differenceInDays(nextPayDay, currentDate);
   const suggestBalance = (daysUntilPayDay - 1) * averageSpendPrDay;
